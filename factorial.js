@@ -21,7 +21,7 @@ function mainMenu(){
         } else if (choice === "2"){
            computeFactorial();
         } else if (choice === "3"){
-            console.log("Exiting Application");
+            exitProgram();
         } else {
             console.log("Invalid Choice. Please Try Again");
         }
@@ -53,4 +53,9 @@ function computeFactorial(){
         })
 }
 
+function exitProgram(){
+    console.log("Exiting Application");
+    rl.close();
+    console.clear();
+}
 mainMenu();
