@@ -1,0 +1,62 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar Chart</title>
+</head>
+<body>
+        
+        <h1>Radar Chart</h1>
+        <div>
+            <canvas id="radarChart"></canvas>
+        </div>
+    </body>
+
+            <script>
+                class radarChart {
+                    constructor (canvasID, dataURL){
+                        this.canvasID = canvasID;
+                        this.dataURL = dataURL;
+                        this.chart = null;
+                    }
+
+                    renderChart(data){
+                        const ctx = document.getElementById(this.canvasID).getContext("2d");
+
+                        this.chart = new Chart (ctx, {
+                            type: "radar",
+                            data:{
+                                //Labels
+                                labels:data.labels,
+                                //Datasets
+                                datasets:data.datasets
+                            },
+                            
+                            options:{
+                                responsive: true,
+                                plugins:{
+                                    legend:{
+                                        position: "top"
+                                    },
+                                    title:{
+                                        display: true,
+                                        //Title
+                                        text: "Radar Chart"
+                                    }
+                                },
+
+                                    scales:{
+                                        r:{
+                                            angleLines:{display:true},
+                                            suggestedMin:0,
+                                            suggestedMax:100
+                                        }
+                                    }
+                            }
+                        });
+                    }
+
+                }
+            </script>
+
+</html>
