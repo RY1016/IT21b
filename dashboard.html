@@ -3,22 +3,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    
     <style>
+
         .container{
             display: flex;
             justify-content: center;
             background-color: rgb(228, 228, 228);
         }
+        .container div{
+            width: 50%;
+            margin: 10px;
+      
+        }
+        .dashboard-card{
+            /* Card Properties */
+            box-shadow: 0 4px 8px 0 rgba(255,255,255);
+            transition: 0.3s;
+            border-radius: 10px;
+            padding: 20px;
+        }
     </style>
+
 </head>
 <body>
     <h1>Dashboard</h1>
     
         <div class="container">
-    <div>
+    <div class="dashboard-card">
     <canvas id="lineChart"></canvas>
     </div>
-    <div>
+    <div class="dashboard-card">
     <canvas id="radarChart"></canvas>
     </div>
 </div>
