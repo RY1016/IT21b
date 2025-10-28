@@ -1,3 +1,4 @@
+
 class LineChart {
     constructor(canvasId, dataUrl) {
         this.canvasId = canvasId;
@@ -5,7 +6,7 @@ class LineChart {
         this.chart = null;
     }
 
-    // Render the line chart with the provided data
+
     renderChart(data) {
         const ctx = document.getElementById(this.canvasId).getContext("2d");
 
@@ -29,12 +30,13 @@ class LineChart {
         });
     }
 
-    
+
     async fetchData() {
         try {
             const response = await fetch(this.dataUrl);
-
-            if (!response.ok) throw new Error(`Failed to load data: ${response.statusText}`);
+            if (!response.ok) {
+                throw new Error(`Failed to load data: ${response.statusText}`);
+            }
 
             const data = await response.json();
             return data;
@@ -44,7 +46,7 @@ class LineChart {
         }
     }
 
-    // Initialize the chart by fetching data and rendering the chart
+
     async init() {
         const data = await this.fetchData();
         if (data) {
@@ -53,70 +55,78 @@ class LineChart {
     }
 }
 
-// Initialize the chart once the DOM is fully loaded
+
 document.addEventListener("DOMContentLoaded", () => {
     const chart = new LineChart("lineChart", "linedata.json");
     chart.init();
 });
 
-    class RadarChart {
-            constructor(canvasID, dataURL) {
-                this.canvasID = canvasID;
-                this.dataURL = dataURL;
-                this.chart = null;
-            }
+class RadarChart {
+    constructor(canvasID, dataURL) {
+        this.canvasID = canvasID;
+        this.dataURL = dataURL;
+        this.chart = null;
+    }
 
-            renderChart(data) {
-                const ctx = document.getElementById(this.canvasID).getContext("2d");
+  
+    renderChart(data) {
+        const ctx = document.getElementById(this.canvasID).getContext("2d");
 
-                this.chart = new Chart(ctx, {
-                    type: "radar",
-                    data: {
-                        labels: data.labels, 
-                        datasets: data.datasets  
+        this.chart = new Chart(ctx, {
+            type: "radar",
+            data: {
+                labels: data.labels,      
+                datasets: data.datasets   
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top"
                     },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: "top"
-                            },
-                            title: {
-                                display: true,
-                                text: "Radar Chart"
-                            }
-                        },
-                        scales: {
-                            r: {
-                                angleLines: { display: true },
-                                suggestedMin: 0,
-                                suggestedMax: 100
-                            }
-                        }
+                    title: {
+                        display: true,
+                        text: "Radar Chart"
                     }
-                });
-            }
-
-            async fetchData() {
-                try {
-                    const response = await fetch(this.dataURL);
-                    if (!response.ok) throw new Error(`Failed to load data: ${response.statusText}`);
-
-                    const data = await response.json();
-                    return data;
-                } catch (error) {
-                    console.error("Error fetching data: ", error);
-                    return null;
+                },
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
                 }
             }
-
-            async init() {
-                const data = await this.fetchData();
-                if (data) this.renderChart(data);
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const chart = new RadarChart("radarChart", "radarData.json");
-            chart.init(); 
         });
+    }
+
+
+    async fetchData() {
+        try {
+            const response = await fetch(this.dataURL);
+            if (!response.ok) {
+                throw new Error(`Failed to load data: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            return null;
+        }
+    }
+
+
+    async init() {
+        const data = await this.fetchData();
+        if (data) {
+            this.renderChart(data);
+        }
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const chart = new RadarChart("radarChart", "radarData.json");
+    chart.init(); 
+});
