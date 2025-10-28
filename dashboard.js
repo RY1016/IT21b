@@ -1,18 +1,65 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radar Chart</title>
-</head>
-<body>
-    <h1>Radar Chart</h1>
-    <div>
-        <canvas id="radarChart" width="400" height="400"></canvas>
-    </div>
+class LineChart {
+    constructor(canvasId, dataUrl) {
+        this.canvasId = canvasId;
+        this.dataUrl = dataUrl;
+        this.chart = null;
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        class RadarChart {
+    // Render the line chart with the provided data
+    renderChart(data) {
+        const ctx = document.getElementById(this.canvasId).getContext("2d");
+
+        this.chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: "Monthly Data",
+                    data: data.values,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    
+    async fetchData() {
+        try {
+            const response = await fetch(this.dataUrl);
+
+            if (!response.ok) throw new Error(`Failed to load data: ${response.statusText}`);
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            return null;
+        }
+    }
+
+    // Initialize the chart by fetching data and rendering the chart
+    async init() {
+        const data = await this.fetchData();
+        if (data) {
+            this.renderChart(data);
+        }
+    }
+}
+
+// Initialize the chart once the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+    const chart = new LineChart("lineChart", "linedata.json");
+    chart.init();
+});
+
+    class RadarChart {
             constructor(canvasID, dataURL) {
                 this.canvasID = canvasID;
                 this.dataURL = dataURL;
@@ -73,6 +120,3 @@
             const chart = new RadarChart("radarChart", "radarData.json");
             chart.init(); 
         });
-    </script>
-</body>
-</html>
